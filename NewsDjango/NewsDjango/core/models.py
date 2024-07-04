@@ -19,3 +19,11 @@ class  Noticia(models.Model):
 
     def __str__(self):
         return self.titular
+    
+class InicioSesion(models.Model):
+    usuario = models.CharField(max_length=15)
+    password = models.CharField(max_length=15)
+
+    def __str__(self):
+        return self.usuario
+    

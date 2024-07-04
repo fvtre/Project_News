@@ -147,21 +147,25 @@
 <div style="margin-top: 50px;"></div>
 
 <div class="container">
-	<div class="col-md-6" style="text-align: center;">
-	{% for noticia in noticias %}
-		<h2>{{ noticia.titular }}</h2>
-        <img src="{{noticia.imagen.url}}" style="width: 80%; height: 130;">
-		<div class="txt" style="text-align: left;">
-        <p>{{ noticia.contenido_noticia}}<p>
-		<p>Nombre periodista: {{ noticia.nombre_periodista }}</p>
-        <p>Fecha publicacion: {{ noticia.fecha_publicacion }}</p>
+    <div class="row justify-content-center">
+        {% for noticia in noticias %}
+        <div class="col-md-6">
+            <div style="text-align: center;">
+                <h2>{{ noticia.titular }}</h2>
+                <img src="{{ noticia.imagen.url }}" style="width: 80%; height: auto; margin-bottom: 10px;">
+                <div class="txt" style="text-align: left;">
+                    <p>{{ noticia.contenido_noticia }}</p>
+                    <p>Nombre periodista: {{ noticia.nombre_periodista }}</p>
+                    <p>Fecha publicacion: {{ noticia.fecha_publicacion }}</p>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
     </div>
-	{% endfor %}
-	</div>
 </div>
 
 	<!-- Espacio entre carrusel y sección de imagen y texto -->
-    <div style="margin-top: 50px;"></div>
+    <div style="margin-top: 30px;"></div>
 
     <!-- Sección de imagen y texto -->
 	<div class="container">
