@@ -1,0 +1,516 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Allan-Qaeda News</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+	<link rel="stylesheet" href="{% static 'css/style.css'%}">
+	<link rel="website icon" type="png"
+	href="{% static 'img/logo bomba.png' %}">
+</head>
+<body>
+    <!-- Primera barra de navegación -->
+	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+		<img src="{% static 'img/logo bomba.png' %}" style="height: 5%; width: 5%;">
+		<a class="navbar-brand" style="margin-left: 15px;" href={% url 'Inicio'%}>Allan-Qaeda news</a>
+			<img src="{% static 'img/clima1.png' %}" style="height: 5%; width: 5%;">
+			<span style="color: #00BFFF;">{{ city }} </span> 
+			{% if weather_data %}
+				<span style="color: white;">Temperatura: {{ weather_data.main.temp }}°C, </span> 
+				<span style="color: white;">Humedad: {{ weather_data.main.humidity }}%, </span> 
+				<span style="color: white;">Viento: {{ weather_data.wind.speed }}m/s </span>
+			{% else %}
+				<span style="color: red;">No se pudo obtener información del clima.</span>
+			{% endif %}
+			
+		<div class="navbar-nav ml-auto">
+			{% if user.is_authenticated %}
+            <p class="nav-link text-light mb-0">Bienvenido {{ user.first_name }} {{ user.last_name }}</p>
+            <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+        {% else %}
+            <a class="nav-link" href="{% url 'Login' %}">Login</a>
+        {% endif %}
+		</div>
+	</nav>
+	<div class="navbar-divider d-none d-lg-block"></div>
+	<!-- Segunda barra de navegación -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+		<a class="navbar-brand" id="inicioLink" href={% url 'Inicio'%}>Inicio</a>
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+		  <span class="navbar-toggler-icon"></span>
+		</button>
+	  
+		<div class="collapse navbar-collapse" id="navbarSupportedContent">
+		  <ul class="navbar-nav mr-auto">
+			<li class="nav-item">
+			  <a class="nav-link" href={% url 'Deportes'%}>Deportes</a>
+			</li>
+			<li class="nav-item">
+			  <a class="nav-link" href={% url 'Musica'%}>Musica</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" href={% url 'Chile'%}>Chile</a>
+			  </li>
+			  <li class="nav-item">
+				<a class="nav-link" href={% url 'Mundo'%}>Mundo</a>
+			  </li>
+			  <li class="nav-item">
+				<a class="nav-link" href={% url 'Salud'%}>Salud</a>
+			  </li>
+			  <li class="nav-item">
+				<a class="nav-link" href={% url 'Contacto'%}>Contacto</a>
+			  </li>
+			<li class="nav-item dropdown">
+			  <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+				Ayuda
+			  </a>
+			  <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+				<a class="dropdown-item" href="#">Preguntas Frecuentes</a>
+				<a class="dropdown-item" href="#">Trabaja Con Nosotros</a>
+				<!--<div class="dropdown-divider"></div>
+				<a class="dropdown-item" href="#">Something else here</a>-->
+			  </div>
+			</li>
+			<li class="nav-item">
+			  <a class="nav-link" href={% url 'nuevanoticia'%}>Agregar noticia</a>
+			</li>
+		  </ul>
+		  <form class="form-inline my-2 my-lg-0" onsubmit="validateForm(event)">
+			<input class="form-control mr-sm-2" type="search" id="searchInput" placeholder="Buscar" aria-label="Buscar" data-toggle="tooltip">
+			<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Buscar</button>
+		</form>
+		</div>
+	</nav>
+
+    <!-- Carousel -->
+    <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+        <ol class="carousel-indicators">
+            <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+            <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+            <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+			<li data-target="#carouselExampleIndicators" data-slide-to="3"></li>
+			<li data-target="#carouselExampleIndicators" data-slide-to="4"></li>
+        </ol>
+        <div id="carouselExampleSlidesOnly" class="carousel slide" data-ride="carousel" data-interval="3000">
+			<div class="carousel-inner">
+			  <div class="carousel-item active">
+				<img src="{% static 'img/box.jpg' %}" class="d-block w-100" style="width: 1200px; height: 300px; object-fit: cover;">
+				<div class="carousel-caption">
+					<a class="nav-link" href={% url 'Deportes'%}>
+					<h5>Tyson VS Jake Paul</h5>
+					<p>La Pelea Mas esperada</p></a>
+				</div>
+			  </div>
+
+            <div class="carousel-item">
+            	<img src="{% static 'img/aisa.jpg' %}" class="d-block w-100" style="width: 1200px; height: 300px; object-fit: cover;">
+				<div class="carousel-caption">
+					<a class="nav-link" href={% url 'Musica-aisa-battle-beast'%}>
+					<h5>AISA Heavy Metal</h5>
+					<p>Nos habla de su proxima experiencia abriendo el Show de Battle Beast en Chile</p></a>
+				</div>
+			</div>
+
+            <div class="carousel-item">
+                <img src="{% static 'img/chile.jpg' %}" class="d-block w-100" style="width: 1200px; height: 300px; object-fit: cover;">
+				<div class="carousel-caption">
+					<a class="nav-link" href={% url 'Chile'%}>
+					<h5>Chile al Dia</h5>
+					<p>Informate Hoy</p></a>
+				</div>
+			</div>
+
+			<div class="carousel-item">
+                <img src="{% static 'img/mundo.jpg' %}" class="d-block w-100" style="width: 1200px; height: 300px; object-fit: cover;">
+				<div class="carousel-caption">
+					<a class="nav-link" href={% url 'Mundo'%}>
+					<h5>El Mundo en tu Ventana</h5>
+					<p>Conoce hoy el mundo</p></a>
+				</div>
+			</div>
+
+			<div class="carousel-item">
+                <img src="{% static 'img/salud.jpg' %}" class="d-block w-100" style="width: 1200px; height: 300px; object-fit: cover;">
+				<div class="carousel-caption">
+					<a class="nav-link" href={% url 'Salud'%}>
+					<h5>Salud</h5>
+					<p>Nuevas Tecnologias a nuestro servicio</p></a>
+				</div>
+			</div>
+        </div>
+		
+        <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only"></span>
+        </a>
+        <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only"></span>
+        </a>
+    </div>
+</div>
+
+<div style="margin-top: 50px;"></div>
+<div class="container">
+	<h5>Noticias Recientes</h5>
+	{% if news_data.articles %}
+	{% for article in news_data.articles %}
+	<div class="news-article">
+		<h5>{{ article.title }}</h5>
+		<p>{{ article.description }}</p>
+		<a href="{{ article.url }}" target="_blank">Leer más</a>
+	</div>
+	{% endfor %}
+	{% else %}
+	<p>No se pudieron obtener las noticias.</p>
+	{% endif %}
+</div>
+<div style="margin-top: 50px;"></div>
+<div class="container">
+    <div class="row justify-content-center">
+        {% for noticia in noticias %}
+        <div class="col-md-6">
+            <div style="text-align: center;">
+                <h2>{{ noticia.titular }}</h2>
+                <img src="{{ noticia.imagen.url }}" style="width: 80%; height: auto; margin-bottom: 10px;">
+                <div class="txt" style="text-align: left;">
+                    <p>{{ noticia.contenido_noticia }}</p>
+                    <p>Publicada por: {{ noticia.nombre_periodista }} el {{ noticia.fecha_publicacion }}</p>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+	<!-- Espacio entre carrusel y sección de imagen y texto -->
+    <div style="margin-top: 50px;"></div>
+
+    <!-- Sección de imagen y texto -->
+	<div class="container">
+		<div class="row">
+			<div class="col-md-6" style="text-align: center;">
+				<a class="nav-link" href={% url 'Deportes'%}>
+				<h2>Colo-Colo Cobreloa, El Clasico</h2>
+				<img src="{% static 'img/cvsc.png' %}" style="width: 80%; height: 130;text-align: center"></a>
+				<div style="text-align: justify"class="noticia deportes">
+					<p>Este lunes se jugarán tres partidos del balompié nacional, en el que destaca
+						el clásico entre Colo Colo y Cobreloa. Cuando dos equipos del norte del país
+						se vean las caras en el estadio El Cobre, Cobresal vs Deportes Copiapó.
+					</p>
+				</div>
+			</div>
+			<div class="col-md-6" style="text-align: center;">
+				<a class="nav-link" href={% url 'Musica'%}>
+				<h2 style="text-align: center;">VICO-C</h2>
+				<img src="{% static 'img/vico-c.jpg' %}" style="width: 90%"></a>
+				<div class="noticia musica" style="text-align: justify;">
+					<p>El artista Vico C, celebra sus 50 años, medio siglo que"siempre"
+						visualizó alcanzar pese a todas las caídas sufridas en su vida.
+						Vico C, rapero y pionero del reguetón, es reconocido por su influencia 
+						en la música latina. Su carrera, marcada por éxitos como "Me Acuerdo" 
+						y "Desahogo", destaca por abordar temas sociales y personales, 
+						convirtiéndose en un referente del género urbano y dejando un legado 
+						duradero en la industria musical.
+					</p>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Espacio entre sección de imagen y texto -->
+    <div style="margin-top: 50px;"></div>
+
+	<!-- Segunda sección de imagen y texto -->
+	<div class="container">
+		<div class="row">
+			<div class="col-md-6" style="text-align: center;">
+				<a class="nav-link" href={% url 'Deportes'%}>
+				<h2>Draft de NBA</h2>
+				<img src="{% static 'img/nba.webp' %}" style="width: 80%;"></a>
+				<div style="text-align: justify"class="noticia deportes">
+					<p>El joven fenómeno del baloncesto Cooper Flagg, actualmente proyectado como la primera selección del Draft de la NBA en 2025, ha estado en el radar de muchos aficionados al baloncesto durante los últimos años.
+						<br><br>
+						Después de una práctica en el Nike Hoop Summit en Portland, el alero de Maine se sentó con HoopsHype para hablar sobre su traslado a la poderosa Montverde Academy, el impacto de Brian Scalabrine, recibir consejos de LeBron James, prepararse para Duke y más.
+						<br><br>
+						Flagg expresó su entusiasmo por el evento, destacando la oportunidad de competir y representar al país. Comparó el evento con el McDonald's All-American, mencionando que el Nike Hoop Summit es más serio al representar al país. "Es todo un honor estar aquí y competir con estos chicos", dijo Flagg.
+						<br><br>
+						Habló sobre los desafíos de mudarse a una nueva escuela lejos de casa y la influencia positiva de Scalabrine en su carrera. "Él sabe lo que se necesita, y en ese momento no lo sabíamos", compartió Flagg. "Nos llenó de confianza. Ha visto a muchos prospectos, ha estado en la liga. Así que él sabe lo que se necesita para llegar allí".
+					</p>
+				</div>
+			</div>
+			<div class="col-md-6" style="text-align: center;">
+				<a class="nav-link" href={% url 'Salud'%}>
+				<h2>Nanotecnología</h2>
+				<img src="{% static 'img/icon.jpg' %}" style="width: 30%;"></a>
+				<div style="text-align: justify"class="noticia salud">
+					<p>La nanotecnología ha revolucionado la salud al permitir 
+						avances significativos en diagnóstico, tratamiento y 
+						prevención de enfermedades. Mediante la manipulación de 
+						materiales a escala nanométrica, se desarrollan dispositivos 
+						y medicamentos altamente precisos y efectivos. Desde nanopartículas 
+						para administración controlada de fármacos hasta biosensores 
+						ultrasensibles para detección temprana de enfermedades, la nanotecnología 
+						ofrece soluciones innovadoras que prometen mejorar la eficacia de los 
+						tratamientos, reducir efectos secundarios y abrir nuevas posibilidades 
+						en la medicina personalizada.
+					</p>
+				</div>
+			
+			</div>
+		</div>
+	</div>
+	
+	<!-- Espacio entre sección de imagen y texto -->
+    <div style="margin-top: 50px;"></div>
+
+    <!--Tercera sección de imagen y texto -->
+	<div class="container">
+		<div class="row">
+			<div class="col-md-6" style="text-align: center;">
+				<a class="nav-link" href={% url 'Salud'%}>
+				<h2>El Dengue</h2>
+				<img src="{% static 'img/icon.jpg' %}" style="width: 30%;"></a>
+				<div style="text-align: justify"class="noticia salud">
+					<p>El dengue es una enfermedad viral transmitida por mosquitos, 
+						principalmente el Aedes aegypti. Se caracteriza por fiebre alta, 
+						dolores musculares y articulares, dolor de cabeza y erupción cutánea. 
+						En casos graves, puede causar complicaciones potencialmente mortales 
+						como el dengue grave o hemorrágico. La prevención se centra en el control 
+						de los mosquitos y la protección personal contra las picaduras.
+					</p>
+				</div>
+			</div>
+			<div class="col-md-6" style="text-align: center;">
+				<a class="nav-link" href={% url 'Mundo'%}>
+				<h2>Israel realiza un ataque limitado contra objetivos en Irán</h2>
+				<img src="{% static 'img/iran.jpeg' %}" style="width: 80%;"></a>
+				<div style="text-align: justify"class="noticia mundo">
+					<p>Israel lanzó en la mañana de este viernes (hora local) un ataque limitado contra objetivos en Irán, según informaron medios y autoridades de Estados Unidos.
+						Funcionarios estadounidenses le dijeron a la cadena CBS, socia de la BBC, que un misil israelí impactó en el territorio de Irán.
+						Sin embargo, el portavoz del Centro Nacional del Ciberespacio de Irán, Hossein Dalirian, negó que hubiera habido un ataque con misiles.
+						"Sólo hubo un intento fallido y humillante de volar cuadricópteros (drones) y los cuadricópteros también han sido derribados", aseguró en Twitter.
+					</p>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+
+	<!-- Espacio entre sección de imagen y texto -->
+    <div style="margin-top: 50px;"></div>
+
+    <!--Cuarta sección de imagen y texto -->
+	<div class="container">
+		<div class="row">
+			<div class="col-md-6" style="text-align: center;">
+				<a class="nav-link" href={% url 'Musica'%}>
+				<h2>¿Puedes distinguir la música creada con inteligencia artificial?</h2>
+				<img src="{% static 'img/musica ia.jpeg' %}" style="width: 80%;"></a>
+				<div style="text-align: justify"class="noticia musica">
+					<p>La IA generativa ha dado importantes pasos en el terreno de la creación musical, con plataformas que permiten desarrollar canciones en cosa de minutos.
+						La inteligencia artificial ha dado grandes saltos en la generación musical en el último tiempo, y prueba de ello es que muchas veces se hace difícil identificar composiciones e interpretaciones realizadas por estos modelos generativos en lugar de humanos. En esta audiotrivia, podrás poner a prueba tus oídos al intentar detectar cuáles de los siguientes clips fueron generados -tanto en su composición como ejecución- a través de la plataforma de inteligencia artificial Udio (en su versión Beta), y qué extractos corresponden a artistas humanos, pasando por distintos estilos musicales.
+					</p>
+				</div>
+			</div>
+			<div class="col-md-6" style="text-align: center;">
+				<a class="nav-link" href={% url 'Salud'%}>
+				<h2>7 consejos de salud</h2>
+				<h3>Para tu bienestar físico y mental</h3>
+				<img src="{% static 'img/icon.jpg' %}" style="width: 30%;"></a>
+				<div style="text-align: justify"class="noticia salud">
+					<p>En la sociedad actual todo se mueve muy rápido y en ocasiones no tenemos tiempo de pensar si nuestro estilo de vida y nuestros hábitos nos ayudan a encontrarnos mejor. En este blog tratamos de darte algunos consejos de salud que te ayuden a reflexionar y a mejorar tus hábitos de vida, siempre adaptándolos a tus gustos y preferencias. Y es que, mantenernos saludables va mucho más allá de la ausencia de enfermedades, y tiene mucho que ver con sencillas acciones que están bajo nuestro control, como por ejemplo hábitos relacionados con la alimentación, el deporte, el sueño o la higiene.
+					</p>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Espacio entre sección de imagen y texto -->
+    <div style="margin-top: 50px;"></div>
+
+	<!-- Quinta sección de imagen y texto -->
+	<div class="container">
+		<div class="row">
+			<div class="col-md-6" style="text-align: center;">
+				<a class="nav-link" href={% url 'Mundo'%}>
+				<h2>Matan a Jorge Maldonado</h2>
+				<h3>Alcalde del cantón Portovelo en Ecuador. Es el tercero en menos de un mes</h3>
+				<img src="{% static 'img/jorgemaldonado.jpeg' %}" style="width: 80%;"></a>
+				<div style="text-align: justify"class="noticia mundo">
+					<p>La Policía de Ecuador confirmó este viernes la muerte de Jorge Maldonado, 
+						alcalde de Portovelo, en un mensaje en su cuenta de X, antes Twitter. 
+						“Esta mañana, Jorge Maldonado, alcalde del cantón Portovelo, El Oro, 
+						fue víctima de disparos que ocasionaron su deceso, mientras se encontraba 
+						realizando actividades personales”, se indicó en la publicación en la red social.
+					</p>
+				</div>
+			</div>
+			<div class="col-md-6" style="text-align: center;">
+				<a class="nav-link" href={% url 'Musica'%}>
+				<h2>Iron Maiden en Chile 2024</h2>
+				<h3>revisa cuándo son los conciertos y si quedan entradas a la venta</h3>
+				<img src="{% static 'img/ironmaiden.avif' %}" style="width: 80%;">
+				<div style="text-align: justify"class="noticia musica">
+					<p>Los fanáticos de Iron Maiden tienen una cita con la banda de heavy metal a finales de este año, porque la banda llegará a Chile en el marco de su gira The Future Past World Tour 2024.
+						<br><br>
+						Se trata de un concierto que tendrá partida doble, porque luego del éxito del anuncio de la primera fecha, se confirmó una segunda jornada para que nadie se quede fuera.
+						<br><br>
+						Según el anuncio oficial de la visita de los británicos a nuestro país, The Future Past World Tour incluye canciones del reciente álbum de estudio Senjutsu (2021), además de temas del disco Somewhere In Time (1986), las que serán acompañadas de otros clásicos y favoritos.
+						<br><br>
+						<b>CUÁNDO ES EL CONCIERTO DE IRON MAIDEN EN CHILE 2024</b><br>
+						Iron Maiden estará en Chile este 2024 en dos fechas, los días 27 y 28 de noviembre, en el Estadio Nacional de Santiago.
+						Leer más
+					</p></a>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Espacio entre sección de imagen y texto -->
+    <div style="margin-top: 50px;"></div>
+
+	<!-- pie de pagina -->
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12" style="text-align: center;">
+				<div class="noticia deportes">
+					<p>Direccion: Domingo tocornal 1341, Puente Alto.
+						Telefono: +560 9898 7676<br>
+						Todos los derechos Reservados 2024(C)
+					</p>
+				</div>
+			</div>
+		</div>
+
+
+	<!-- Primer Modal -->
+    <div class="modal fade" id="miModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <!-- Cabecera del modal -->
+                <div class="modal-header text-center">
+                    <img src="{% static 'img/logo bomba.png' %}" style="height: 20%; width: 20%;">
+                    <h5 class="modal-title" style="margin-left: 15px;">Allan-Qaeda news</h5>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <!-- Contenido del modal -->
+                <div class="modal-body text-center">
+                    <p>¿Te gustaría recibir notificaciones de las últimas noticias de Allan-Qaeda news?</p>
+                </div>
+                <!-- Pie del modal -->
+                <div class="modal-footer d-flex justify-content-between">
+                    <button type="button" class="btn btn-primary" id="subscribeBtn">Suscribirse</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Segundo Modal -->
+    <div class="modal fade" id="subscribeModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <!-- Cabecera del modal -->
+                <div class="modal-header text-center">
+                    <h5 class="modal-title">Suscribirse a las notificaciones</h5>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <!-- Contenido del modal -->
+                <div class="modal-body text-center">
+                    <p>Introduce tu correo electrónico para suscribirte:</p>
+                    <input type="email" id="emailInput" class="form-control" placeholder="Correo@correo.com">
+                </div>
+                <!-- Pie del modal -->
+                <div class="modal-footer d-flex justify-content-between">
+                    <button type="button" class="btn btn-primary" id="confirmSubscribeBtn">Suscribirse</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tercer Modal -->
+    <div class="modal fade" id="confirmModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <!-- Cabecera del modal -->
+                <div class="modal-header text-center">
+                    <h5 class="modal-title">¡Gracias por suscribirte!</h5>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <!-- Contenido del modal -->
+                <div class="modal-body text-center">
+                    <p>Has sido suscrito exitosamente a las notificaciones de Allan-Qaeda news.</p>
+                </div>
+                <!-- Pie del modal -->
+                <div class="modal-footer d-flex justify-content-between">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+  	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+	<script>
+        // JavaScript para manejar la transición entre los modales
+        document.getElementById('subscribeBtn').addEventListener('click', function() {
+            $('#miModal').modal('hide'); // Cerrar el primer modal
+            $('#subscribeModal').modal('show'); // Abrir el segundo modal
+        });
+
+        document.getElementById('confirmSubscribeBtn').addEventListener('click', function() {
+            var email = document.getElementById('emailInput').value;
+            var emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+
+            if (emailPattern.test(email)) {
+                $('#subscribeModal').modal('hide'); // Cerrar el segundo modal
+                $('#confirmModal').modal('show'); // Abrir el tercer modal
+            } else {
+                alert('Por favor, introduce un correo electrónico válido.');
+            }
+        });
+    </script>
+	<script>
+		$(document).ready(function () {
+			// Mostrar el modal automáticamente al cargar la página
+			$('#miModal').modal('show');
+		});
+	</script>
+	 <script>
+        // Obtener la URL actual
+        var url = window.location.href;
+
+        // Obtener el enlace de inicio
+        var inicioLink = document.getElementById('inicioLink');
+
+        // Verificar si la URL actual coincide con la página de inicio
+        if (url.includes('Inicio.html')) {
+            // Si coincide, agregar la clase de fondo rojo al enlace de inicio
+            inicioLink.classList.add('red-background');
+        }
+    </script>
+	<script>
+		function validateForm(event) {
+			const searchInput = document.getElementById('searchInput');
+	
+			if (searchInput.value.trim() === '') {
+				event.preventDefault(); // Previene el envío del formulario
+				$(searchInput).tooltip('dispose').attr('title', 'El campo de búsqueda no puede estar vacío.').tooltip('show');
+			} else {
+				$(searchInput).tooltip('dispose');
+			}
+		}
+	
+		// Inicializa el tooltip
+		$(document).ready(function(){
+			$('[data-toggle="tooltip"]').tooltip();
+		});
+	</script>
+</body>
+</html>

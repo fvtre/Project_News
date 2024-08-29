@@ -1,0 +1,102 @@
+.navbar-divider {
+    border-right: 0px solid rgb(255, 255, 255);
+    height: 1px; /* Ajusta la altura*/
+}
+/* Estilos para cada categoría de noticias */
+.header {
+    color: #36A0FF;
+    font-size: 27px;
+    padding: 10px;
+}
+
+.bigicon {
+    font-size: 35px;
+    color: #36A0FF;
+}
+
+
+.navbar-brand {
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+
+.red-background {
+    background-color: red !important;
+}
+
+.label {
+    width: max-content;
+    margin: 90px auto;
+    display: grid;
+    grid-template-areas: "input";
+}
+.input {
+    grid-area: input;
+    width: 300px;
+    font: inherit;
+    border-radius: 10px;
+    border: 1px solid gray;
+    padding: .7rem 1.5rem;
+}
+.label_name {
+    grid-area: input;
+    z-index: 100;
+    width: max-content;
+    margin-left: 1rem;
+    padding: 0 .5rem;
+    align-self: center;
+    height: 100%;
+    display: flex;
+    align-items: center;
+
+    transition: transform .2s;
+    transform-origin: center left;
+}
+.input:focus + .label_name,
+.input:not(:placeholder-shown) + .label_name{
+    transform: translateY(-50%) scale(.7);
+    background-color: white;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s, transform 0.3s;
+  }
+  
+  .btn-primary:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px);
+  }
+  
+  .btn-primary:active {
+    background-color: #003d80;
+    transform: translateY(0);
+  }
+.btn-danger{
+    background-color: red;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s, transform 0.3s;
+}
+.btn-danger:hover {
+    background-color: #cd0000;
+    transform: translateY(-2px);
+  }
+  
+  .btn-danger:active {
+    background-color: #cd0000;
+    transform: translateY(0);
+  } 
+  
+  
